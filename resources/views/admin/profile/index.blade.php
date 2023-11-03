@@ -20,8 +20,12 @@
                 </div>
                 @endif
                 {{-- Alert Message End --}}
-                <form action="{{route('admin#adminAccountUpdate')}}"  method="POST">
+                <form action="{{route('admin#adminAccountUpdate')}}"  method="POST" enctype="multipart/form-data">
                     @csrf
+
+                    <div class="container text-center">
+                        <img width="50px" class="rounded-circle shadow-sm" @if ($userInfo['userPfp'] == null) src="{{ asset('default/default.png') }}" @else src="{{ asset('postImage/' . $userInfo['userPfp']) }}" @endif>
+                    </div>
                     <div class="row mt-3">
                         <div class="col-2">Name</div>
                         <div class="col">
@@ -30,7 +34,6 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
                     </div>
                     <div class="row mt-3">
                         <div class="col-2">Email</div>
@@ -51,6 +54,12 @@
                         <div class="col-2">Address</div>
                         <div class="col">
                             <textarea type="text" name="adminAddress" class="form-control" cols="30" rows="10" placeholder="Enter Address">{{$userInfo->address}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-2">Image</div>
+                        <div class="col">
+                            <input type="file" value="old('postImage')" name="postImage" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-3">

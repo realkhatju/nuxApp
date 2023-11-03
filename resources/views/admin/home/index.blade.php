@@ -26,14 +26,15 @@
     </div>
     @endif
     {{-- Alert Message End --}}
-    <div class="col row border-top border-secondary overflow-auto">
+    <div class="col row border-top border-secondary overflow-auto sticky-top">
         @foreach ($post as $item)
             <div class="card py-4">
                 <div class="container">
-                    <img class="col rounded-circle mb-3" style="width: 40px;"
-                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+                    <div class="container text-center">
+                        <img width="50px" class="rounded-circle shadow-sm" @if ($item['userPfp'] == null) src="{{ asset('default/default.png') }}" @else src="{{ asset('postImage/' . $item['userPfp']) }}" @endif>
+                    </div>
                     <div class="row">
-                        <span class="col-2 fw-bold">{{Auth::user()->name}}</span>
+                        <span class="col-2 fw-bold">{{$item['name']}}</span>
                         <span class="col-10">{{$item->created_at->format('g') - $date1}} hr</span>
                     </div>
                 </div>
@@ -42,8 +43,7 @@
                     <p class="card-text">{{ $item['description'] }}</p>
                 </div>
                 <img width="100%" class="rounded shadow" height="100%"
-                    @if ($item['image'] == null) src="{{ asset('default/default.png') }}"
-            @else  src="{{ asset('postImage/' . $item['image']) }}"> @endif
+                    @if ($item['image'] == null) src="hidden" @else  src="{{ asset('postImage/' . $item['image']) }}" @endif>
             <div class="card-body">
                 <div class="container">
                     <div class="row">

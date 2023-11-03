@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -12,7 +14,11 @@ class PostController extends Controller
     //post page
     public function index(){
         $post = Post::get();
-        return view('admin.post.index',compact('post'));
+        $userInfo = User::get();
+        $userDetails = Auth::user()->id;
+        // dd($userInfo->toArray());
+        // dd($userDetails);
+        return view('admin.post.index',compact('post','userInfo','userDetails'));
     }
 
     //create post
@@ -31,6 +37,10 @@ class PostController extends Controller
         }else{
             $data = $this->getPostData($request,null);
         }
+        // $userInfo = User::get();
+        // $userDetails = Auth::user()->id;
+        // $post = Post::get();
+        // dd($userInfo->toArray());
         // dd($request->toArray());
         // $file = $request->file('postImage');
         // $fileName = uniqid().'_'.$file->getClientOriginalName();
@@ -38,7 +48,8 @@ class PostController extends Controller
         // $data = $this->getPostData($request,$fileName);
         // dd($data);
         Post::create($data);
-        return redirect('home')->with(['updateSuccess' => 'Your post was sent']);
+        // $date1 = date('g', time());
+        return redirect('home')->with(['updateSuccess'=>"Your post was sent"]);
         // dd($fileName);
     }
 
@@ -49,6 +60,7 @@ class PostController extends Controller
             'description' => $request->postDescription,
             'image' => $fileName,
             'category_id' => $request->postDescriptionName,
+            'id' => $request->userId,
             'created_at' => Carbon::now(),
             'update_at' => Carbon::now(),
         ];

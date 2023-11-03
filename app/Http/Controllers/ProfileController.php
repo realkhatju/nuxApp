@@ -15,7 +15,7 @@ class ProfileController extends Controller
     public function index(){
         $id = Auth::user()->id;
         // dd($id);
-        $userInfo = User::select('id','name','email','phone','address','gender')->where('id',$id)->first();
+        $userInfo = User::select('id','name','email','phone','address','gender','userPfp')->where('id',$id)->first();
         // dd($userInfo->toArray());
         return view('admin.profile.index',compact('userInfo'));
     }
@@ -53,7 +53,7 @@ class ProfileController extends Controller
 
     //Admin Account Update
     public function adminAccountUpdate(Request $request){
-        $userData = $this->getUserInfo($request);
+        // $userData = $this->getUserInfo($request);
         $validator = $this->userValidationCheck($request);
 
         if($validator->fails()){
@@ -61,8 +61,22 @@ class ProfileController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
-        // dd($userData);
-        User::where('id',Auth::user()->id)->update($userData);
+        if(!empty($request->postImage)){
+            // dd($request->toArray());
+            $file = $request->file('postImage');
+            // dd($file);
+            $fileName = uniqid().'_'.$file->getClientOriginalName();
+            // dd($fileName);
+            $file->move(public_path().'/postImage',$fileName);
+            // dd($file);
+            $data = $this->getUserInfo($request,$fileName);
+            // dd($data);
+        }else{
+            $data = $this->getUserInfo($request,null);
+        }
+        // dd($data);
+        User::where('id',Auth::user()->id)->update($data);
+
         return back()->with(['updateSuccess' => 'Account Updated Successfully']);
     }
 
@@ -72,13 +86,14 @@ class ProfileController extends Controller
     }
 
     //getting userInfo
-    private function getUserInfo($request){
+    private function getUserInfo($request,$fileName){
         return [
             'name' => $request->adminName,
             'email' => $request->adminEmail,
             'phone' => $request->adminPhone,
             'address' => $request->adminAddress,
             'gender' => $request->adminGender,
+            'userPfp' => $fileName,
             'updated_at' => Carbon::now(),
         ];
     }

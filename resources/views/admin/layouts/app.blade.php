@@ -129,7 +129,7 @@
                     <div class="dropdown">
                         <span class="w-100 d-flex justify-content-center align-items-center" type="button" data-bs-toggle="dropdown">
                             <div class="col"><i class="fa-brands fa-linux fs-1"></i></div>
-                            <div class="col">{{Auth::user()->name}}</div>
+                            <div class="col-6">{{Auth::user()->name}}</div>
                             <div class="col">...</div>
                         </span>
                         <ul class="dropdown-menu" >
@@ -144,7 +144,7 @@
                       </div>
                 </div>
             </div>
-            <div class="col-6 border-start border-end border-secondary" style="height: 100vh;">
+            <div class="col-6 border-start border-end border-secondary overflow-auto" style="height: 100vh;">
                 @yield('content')
             </div>
             <div class="col-3 mt-2" >

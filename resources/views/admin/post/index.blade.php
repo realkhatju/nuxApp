@@ -21,6 +21,16 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <select name="userId" class="form-control" hidden>
+                                @foreach ($userInfo as $item)
+                                <option value="{{$item['id']}}" @if ($item['id'] == $userDetails) selected @endif>{{$item['id']}}</option>
+                                @endforeach
+                            </select>
+                            @error('userId')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    <div class="form-group">
                         <label for="">Image</label>
                         <input type="file" value="old('postImage')" name="postImage" class="form-control">
                     </div>

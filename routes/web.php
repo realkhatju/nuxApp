@@ -53,7 +53,7 @@ Route::middleware([
     Route::post('admin/changePassword',[ProfileController::class,'changePassword'])->name('admin#changePassword');
 
     //Account Update
-    Route::post('admin/accountUpdate',[ProfileController::class,'adminAccountUpdate'])->name('admin#adminAccountUpdate');
+    Route::post('profile',[ProfileController::class,'adminAccountUpdate'])->name('admin#adminAccountUpdate');
 
     //Delete User Account
     Route::get('admin/accountDelete/{id}',[ListController::class,'deleteUserAccount'])->name('admin#deleteAccount');
